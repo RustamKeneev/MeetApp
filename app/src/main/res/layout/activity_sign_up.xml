@@ -224,19 +224,32 @@
 
             </androidx.cardview.widget.CardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_sign_up"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:fontFamily="@font/ubuntu_bold"
-                android:background="@color/colorTextIcons"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintTop_toBottomOf="@id/card_sign_in"
-                android:includeFontPadding="false"
-                android:text="@string/sign_up"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/>
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_sign_up"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:background="@color/colorTextIcons"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintTop_toBottomOf="@id/card_sign_in"
+                    android:includeFontPadding="false"
+                    android:text="@string/sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_sign_up"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"/>
+            </FrameLayout>
+
 
             <TextView
                 android:layout_marginTop="@dimen/_20sdp"
