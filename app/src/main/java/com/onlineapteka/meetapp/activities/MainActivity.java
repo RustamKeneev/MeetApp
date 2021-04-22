@@ -1,8 +1,10 @@
-package com.onlineapteka.meetapp;
+package com.onlineapteka.meetapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.onlineapteka.meetapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
