@@ -146,6 +146,16 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"/>
 
+        <ProgressBar
+            android:id="@+id/progress_bar_sign_in"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/button_sign_in"
+            app:layout_constraintBottom_toBottomOf="@id/button_sign_in"
+            app:layout_constraintLeft_toLeftOf="@id/button_sign_in"
+            app:layout_constraintRight_toRightOf="@id/button_sign_in"
+            android:layout_width="@dimen/_26sdp"
+            android:layout_height="@dimen/_26sdp"/>
+
 
         <TextView
             android:id="@+id/text_no_account"
