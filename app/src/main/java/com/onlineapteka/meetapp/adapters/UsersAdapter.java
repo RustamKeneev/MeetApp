@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineapteka.meetapp.R;
+import com.onlineapteka.meetapp.listeners.UserListeners;
 import com.onlineapteka.meetapp.models.User;
 
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.List;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder>{
 
     private List<User> userList;
+    private UserListeners userListeners;
 
-    public UsersAdapter(List<User> userList) {
+    public UsersAdapter(List<User> userList,UserListeners userListeners) {
         this.userList = userList;
+        this.userListeners = userListeners;
     }
 
     @NonNull
@@ -39,7 +42,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         return userList.size();
     }
 
-    static class UsersViewHolder extends RecyclerView.ViewHolder{
+     class UsersViewHolder extends RecyclerView.ViewHolder{
         TextView textFirstChar;
         TextView textUserName;
         TextView textEmail;
@@ -57,6 +60,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             textFirstChar.setText(user.firstName.substring(0,1));
             textUserName.setText(String.format("%s %s",user.firstName,user.lastName));
             textEmail.setText(user.email);
+            imageAudioMeeting.setOnClickListener(v ->
+                    userListeners.initiateAudioMeeting(user));
+            imageVideoMeeting.setOnClickListener(v ->
+                    userListeners.initiateVideoMeeting(user));
         }
     }
 }
