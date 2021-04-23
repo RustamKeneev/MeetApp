@@ -1,12 +1,16 @@
 package com.onlineapteka.meetapp.activities;
 
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.onlineapteka.meetapp.R;
 import com.onlineapteka.meetapp.models.User;
@@ -14,10 +18,8 @@ import com.onlineapteka.meetapp.network.ApiClient;
 import com.onlineapteka.meetapp.network.ApiService;
 import com.onlineapteka.meetapp.utilities.Constants;
 import com.onlineapteka.meetapp.utilities.PreferenceManager;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,11 +44,6 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
 
     private void initViews() {
         preferenceManager = new PreferenceManager(getApplicationContext());
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() !=null){
-                inviterToken = task.getResult().getToken();
-            }
-        });
 
         imageMeetingType = findViewById(R.id.image_meeting_type);
         String meetingType = getIntent().getStringExtra("type");
@@ -68,12 +65,20 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
         }
 
         imageStopInvitation.setOnClickListener(v -> {
-            onBackPressed();
+            if (user !=null){
+                cancelInvitation(user.token);
+            }
         });
 
-        if (meetingType !=null && user !=null){
-            initiateMeeting(meetingType, user.token);
-        }
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() !=null){
+                inviterToken = task.getResult().getToken();
+                if (meetingType !=null && user !=null){
+                    initiateMeeting(meetingType, user.token);
+                }
+            }
+        });
+
     }
 
     private void initiateMeeting(String meetingType, String receiverToken){
@@ -109,6 +114,10 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                     if (type.equals(Constants.REMOTE_MSG_INVITATION)){
                         Toast.makeText(OutgoingInvitationActivity.this,
                                 "Invitation sent successfully", Toast.LENGTH_LONG).show();
+                    }else if (type.equals(Constants.REMOTE_MSG_INVITATION_RESPONSE)){
+                        Toast.makeText(OutgoingInvitationActivity.this,"Invitation canceled",
+                                Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }else {
                     Toast.makeText(OutgoingInvitationActivity.this,
@@ -123,5 +132,54 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+
+    private void cancelInvitation(String receiverToken){
+        try {
+            JSONArray tokens = new JSONArray();
+            tokens.put(receiverToken);
+            JSONObject body = new  JSONObject();
+            JSONObject data = new  JSONObject();
+            data.put(Constants.REMOTE_MSG_TYPE,Constants.REMOTE_MSG_INVITATION_RESPONSE);
+            data.put(Constants.REMOTE_MSG_INVITATION_RESPONSE,Constants.REMOTE_MSG_INVITATION_CANCELLED);
+            body.put(Constants.REMOTE_MSG_DATA,data);
+            body.put(Constants.REMOTE_MSG_REGISTRATION_IDS,tokens);
+            sendRemoteMessage(body.toString(),Constants.REMOTE_MSG_INVITATION_RESPONSE);
+        }catch (Exception e){
+            Toast.makeText( this,e.getMessage(),Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    private BroadcastReceiver invitationResponseReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String type = intent.getStringExtra(Constants.REMOTE_MSG_INVITATION_RESPONSE);
+            if (type !=null){
+                if (type.equals(Constants.REMOTE_MSG_INVITATION_ACCEPTED)){
+                    Toast.makeText(context,"Invitation Accepted ",
+                            Toast.LENGTH_LONG).show();
+                }else if (type.equals(Constants.REMOTE_MSG_INVITATION_REJECTED)){
+                    Toast.makeText(context,"Invitation Rejected ",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(
+                invitationResponseReceiver,
+                new IntentFilter(Constants.REMOTE_MSG_INVITATION_RESPONSE));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(
+                invitationResponseReceiver);
     }
 }
