@@ -41,6 +41,7 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     private String inviterToken = null;
     private String meetingRoom = null;
+    private String meetingType =  null;
 
 
     @Override
@@ -54,10 +55,12 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
 
         imageMeetingType = findViewById(R.id.image_meeting_type);
-        String meetingType = getIntent().getStringExtra("type");
+        meetingType = getIntent().getStringExtra("type");
         if (meetingType !=null){
             if (meetingType.equals("video")){
                 imageMeetingType.setImageResource(R.drawable.ic_video);
+            }else {
+                imageMeetingType.setImageResource(R.drawable.ic_call);
             }
         }
         textFirstChar = findViewById(R.id.text_first_char);
@@ -172,18 +175,16 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                 if (type.equals(Constants.REMOTE_MSG_INVITATION_ACCEPTED)){
                     try {
                         URL serverURL = new URL("https://meet.jit.si");
-                        JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
-                                .setServerURL(serverURL)
-                                .setWelcomePageEnabled(false)
-                                .setRoom(meetingRoom)
-//                                    .setAudioMuted(false)
-//                                    .setVideoMuted(false)
-//                                    .setAudioOnly(false)
-                                .build();
-                        JitsiMeetActivity.launch(OutgoingInvitationActivity.this,options);
+                        JitsiMeetConferenceOptions.Builder builder = new JitsiMeetConferenceOptions.Builder();
+                        builder.setServerURL(serverURL).setWelcomePageEnabled(false).setRoom(meetingRoom);
+                        if (meetingType.equals("audio")){
+                            builder.setVideoMuted(true);
+                        }
+                        JitsiMeetActivity.launch(OutgoingInvitationActivity.this,builder.build());
                         finish();
                     }catch (Exception e){
                         Toast.makeText(OutgoingInvitationActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }else if (type.equals(Constants.REMOTE_MSG_INVITATION_REJECTED)){
                     Toast.makeText(context,"Invitation Rejected ",Toast.LENGTH_LONG).show();
