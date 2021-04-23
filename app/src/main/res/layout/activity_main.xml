@@ -44,11 +44,36 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_users"
         android:orientation="vertical"
+        android:padding="@dimen/_6sdp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_header"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
+
+    <TextView
+        android:id="@+id/text_error_message"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:gravity="center"
+        android:fontFamily="@font/ubuntu_regular"
+        android:includeFontPadding="false"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="@dimen/_14ssp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_user"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_header"
+        android:layout_width="@dimen/_26sdp"
+        android:layout_height="@dimen/_26sdp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
