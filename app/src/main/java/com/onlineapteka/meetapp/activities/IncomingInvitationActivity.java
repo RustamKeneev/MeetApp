@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +19,12 @@ import com.onlineapteka.meetapp.network.ApiClient;
 import com.onlineapteka.meetapp.network.ApiService;
 import com.onlineapteka.meetapp.utilities.Constants;
 
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.net.URL;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,17 +107,33 @@ public class IncomingInvitationActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 if (response.isSuccessful()){
                     if (type.equals(Constants.REMOTE_MSG_INVITATION_ACCEPTED)){
-                        Toast.makeText(IncomingInvitationActivity.this,"Invitation Accepted",
-                                Toast.LENGTH_LONG).show();
+                        try {
+                            URL serverURL = new URL("https://meet.jit.si");
+                            JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+                                    .setServerURL(serverURL)
+                                    .setWelcomePageEnabled(false)
+                                    .setRoom(getIntent().getStringExtra(Constants.REMOTE_MSG_MEETING_ROOM))
+//                                    .setAudioMuted(false)
+//                                    .setVideoMuted(false)
+//                                    .setAudioOnly(false)
+                                    .build();
+                            JitsiMeetActivity.launch(IncomingInvitationActivity.this,options);
+                            finish();
+                        }catch (Exception e){
+                            Toast.makeText(IncomingInvitationActivity.this,e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                            finish();
+                        }
                     }else {
                         Toast.makeText(IncomingInvitationActivity.this,"Invitation Rejected",
                                 Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }else {
                     Toast.makeText(IncomingInvitationActivity.this,
                             response.message(),Toast.LENGTH_LONG).show();
+                    finish();
                 }
-                finish();
             }
 
             @Override
