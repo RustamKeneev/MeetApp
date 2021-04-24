@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/_6sdp"
+    android:id="@+id/user_container"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,6 +22,22 @@
         app:layout_constraintBottom_toTopOf="@id/view_divider"
         android:layout_width="@dimen/_36sdp"
         android:layout_height="@dimen/_36sdp"/>
+
+    <ImageView
+        android:id="@+id/image_selected"
+        android:background="@drawable/background_user_icon"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/_4sdp"
+        android:src="@drawable/ic_done"
+        android:tint="@color/colorTextIcons"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/text_first_char"
+        app:layout_constraintLeft_toLeftOf="@id/text_first_char"
+        app:layout_constraintRight_toRightOf="@id/text_first_char"
+        app:layout_constraintTop_toTopOf="@id/text_first_char"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:ignore="UseAppTint" />
 
     <View
         android:id="@+id/view_supporter"

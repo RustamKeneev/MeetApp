@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.onlineapteka.meetapp.R;
 import com.onlineapteka.meetapp.models.User;
 import com.onlineapteka.meetapp.network.ApiClient;
@@ -24,7 +27,9 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -45,6 +50,8 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
     private String inviterToken = null;
     private String meetingRoom = null;
     private String meetingType =  null;
+    private int rejectionCount = 0;
+    private int totalReceivers = 0;
 
 
     @Override
@@ -79,26 +86,58 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
         }
 
         imageStopInvitation.setOnClickListener(v -> {
-            if (user !=null){
-                cancelInvitation(user.token);
+            if (getIntent().getBooleanExtra("isMultiple",false)) {
+                Type type = new TypeToken<ArrayList<User>>(){}.getType();
+                ArrayList<User> receivers = new Gson().fromJson(getIntent()
+                        .getStringExtra("selectedUsers"),type);
+                cancelInvitation(null,receivers);
+            }else {
+                if (user !=null){
+                    cancelInvitation(user.token,null);
+                }
             }
         });
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() !=null){
                 inviterToken = task.getResult().getToken();
-                if (meetingType !=null && user !=null){
-                    initiateMeeting(meetingType, user.token);
+                if (meetingType !=null){
+                    if (getIntent().getBooleanExtra("isMultiple",false)){
+                        Type type = new TypeToken<ArrayList<User>>(){}.getType();
+                        ArrayList<User> receivers = new Gson().fromJson(getIntent()
+                                .getStringExtra("selectedUsers"),type);
+                        if (receivers !=null){
+                            totalReceivers = receivers.size();
+                        }
+                        initiateMeeting(meetingType,null,receivers);
+                    }else {
+                        if (user !=null){
+                            totalReceivers = 1;
+                            initiateMeeting(meetingType, user.token,null);
+                        }
+                    }
                 }
             }
         });
 
     }
 
-    private void initiateMeeting(String meetingType, String receiverToken){
+    private void initiateMeeting(String meetingType, String receiverToken, ArrayList<User> receiver){
         try {
             JSONArray tokens = new JSONArray();
-            tokens.put(receiverToken);
+            if (receiver !=null){
+                tokens.put(receiverToken);
+            }
+            if (receiver !=null && receiver.size() > 0){
+                StringBuilder userNames = new StringBuilder();
+                for (int i = 0; i < receiver.size(); i++){
+                    tokens.put(receiver.get(i).token);
+                    userNames.append(receiver.get(i).firstName).append(" ").append(receiver.get(i).lastName).append("\n");
+                }
+                textFirstChar.setVisibility(View.GONE);
+                textEmail.setVisibility(View.GONE);
+                textUserName.setText(userNames.toString());
+            }
             JSONObject body = new JSONObject();
             JSONObject data = new JSONObject();
             data.put(Constants.REMOTE_MSG_TYPE,Constants.REMOTE_MSG_INVITATION);
@@ -153,10 +192,18 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
     }
 
 
-    private void cancelInvitation(String receiverToken){
+    private void cancelInvitation(String receiverToken, ArrayList<User> receiver){
         try {
             JSONArray tokens = new JSONArray();
-            tokens.put(receiverToken);
+            if (receiverToken !=null){
+                tokens.put(receiverToken);
+            }
+            if (receiver !=null && receiver.size() > 0){
+                for (User user : receiver){
+                    tokens.put(user.token);
+
+                }
+            }
             JSONObject body = new  JSONObject();
             JSONObject data = new  JSONObject();
             data.put(Constants.REMOTE_MSG_TYPE,Constants.REMOTE_MSG_INVITATION_RESPONSE);
@@ -190,8 +237,11 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                         finish();
                     }
                 }else if (type.equals(Constants.REMOTE_MSG_INVITATION_REJECTED)){
-                    Toast.makeText(context, R.string.invitation_rejected,Toast.LENGTH_LONG).show();
-                    finish();
+                    rejectionCount += 1;
+                    if (rejectionCount == totalReceivers){
+                        Toast.makeText(context, R.string.invitation_rejected,Toast.LENGTH_LONG).show();
+                        finish();
+                    }
                 }
             }
         }

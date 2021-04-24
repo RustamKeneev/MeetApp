@@ -3,6 +3,7 @@ package com.onlineapteka.meetapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.onlineapteka.meetapp.R;
 import com.onlineapteka.meetapp.adapters.UsersAdapter;
 import com.onlineapteka.meetapp.listeners.UserListeners;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<User> userList;
     private UsersAdapter usersAdapter;
+    private ImageView imageConference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
         recyclerView = findViewById(R.id.recyclerview_users);
         textErrorMessage = findViewById(R.id.text_error_message);
         textTitle = findViewById(R.id.text_title);
+        imageConference = findViewById(R.id.image_conference);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
         swipeRefreshLayout.setOnRefreshListener(this::getUsers);
 
         textTitle.setText(String.format("%s %s",
@@ -160,6 +165,22 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
             intent.putExtra("user",user);
             intent.putExtra("type","audio");
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onMultipleUsersAction(Boolean isMultipleUsersSelected) {
+        if (isMultipleUsersSelected){
+            imageConference.setVisibility(View.VISIBLE);
+            imageConference.setOnClickListener(v -> {
+               Intent intent = new Intent(getApplicationContext(),OutgoingInvitationActivity.class);
+               intent.putExtra("selectedUsers",new Gson().toJson(usersAdapter.getSelectedUsers()));
+               intent.putExtra("type","video");
+               intent.putExtra("isMultiple",true);
+               startActivity(intent);
+            });
+        }else {
+            imageConference.setVisibility(View.GONE);
         }
     }
 }
