@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">MeetApp</string>
     <string name="welcome_to">Welcome To</string>
     <string name="video_meeting_conference_app">Video Meeting | Conference App</string>
@@ -18,4 +18,21 @@
     <string name="sign_out">Sign Out</string>
     <string name="incoming_meeting_invitation">Incoming Meeting Invitation</string>
     <string name="sending_meeting_invitation">Sending Meeting Invitation</string>
-</resources>
+    <string name="invitation_canceled">\"Invitation Canceled \"</string>
+    <string name="invitation_rejected" tools:ignore="MissingTranslation">Invitation Rejected</string>
+    <string name="unable_to_sign_in_out" tools:ignore="MissingTranslation">Unable to sign in out</string>
+    <string name="is_not_available_for_meeting" tools:ignore="MissingTranslation">is not available for meeting</string>
+    <string name="unable_to_send_token" tools:ignore="MissingTranslation">"Unable to send token"</string>
+    <string name="no_users_available" tools:ignore="MissingTranslation">No users available</string>
+    <string name="invitation_sent_successfully" tools:ignore="MissingTranslation">Invitation sent successfully</string>
+    <string name="enter_email" tools:ignore="MissingTranslation">Enter email</string>
+    <string name="enter_valid_email" tools:ignore="MissingTranslation">Enter valid email</string>
+    <string name="enter_password" tools:ignore="MissingTranslation">Enter password</string>
+    <string name="unable_to_sign_in" tools:ignore="MissingTranslation">Unable to sign in</string>
+
+    <string name="error" tools:ignore="MissingTranslation">\"Error \"</string>
+    <string name="enter_first_name" tools:ignore="MissingTranslation">Enter first name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="enter_confirm_password">Enter confirm password</string>
+    <string name="password_and_confirm_password_must_be_same">Password and confirm password must be same</string>
+    </resources>

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.onlineapteka.meetapp.R.string.unable_to_sign_in_out;
+
 public class MainActivity extends AppCompatActivity implements UserListeners {
 
     private PreferenceManager preferenceManager;
@@ -97,11 +99,11 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
                         if (userList.size() > 0 ){
                             usersAdapter.notifyDataSetChanged();
                         }else {
-                            textErrorMessage.setText(String.format("%s","No users available"));
+                            textErrorMessage.setText(String.format("%s",getString(R.string.no_users_available)));
                             textErrorMessage.setVisibility(View.VISIBLE);
                         }
                     }else {
-                        textErrorMessage.setText(String.format("%s","No users available"));
+                        textErrorMessage.setText(String.format("%s",R.string.no_users_available));
                         textErrorMessage.setVisibility(View.VISIBLE);
                     }
                 });
@@ -112,14 +114,12 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
         documentReference = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(
                 preferenceManager.getString(Constants.KEY_USER_ID));
         documentReference.update(Constants.KEY_FCM_TOKEN,token)
-//                .addOnSuccessListener(aVoid -> Toast.makeText(MainActivity.this,
-//                        "Token update successfully", Toast.LENGTH_LONG).show())
                 .addOnFailureListener(e ->
-                        Toast.makeText(MainActivity.this,"Unable to send token " +
+                        Toast.makeText(MainActivity.this,getString(R.string.unable_to_send_token) +
                                         e.getMessage(), Toast.LENGTH_LONG).show());
     }
     private void signOut(){
-        Toast.makeText(MainActivity.this,"Sign Out...",Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this,R.string.sign_out,Toast.LENGTH_LONG).show();
         firebaseFirestore = FirebaseFirestore.getInstance();
         documentReference = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS)
                 .document(preferenceManager.getString(Constants.KEY_USER_ID));
@@ -130,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
            startActivity(new Intent(getApplicationContext(),SignInActivity.class));
            finish();
         }).addOnFailureListener(e -> {
-            Toast.makeText(MainActivity.this,"Unable to sign in out",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,
+                    R.string.unable_to_sign_in_out,Toast.LENGTH_LONG).show();
         });
     }
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
     public void initiateVideoMeeting(User user) {
         if (user.token == null || user.token.trim().isEmpty()){
             Toast.makeText(this,
-                    user.firstName + " " + user.lastName + "is not available for meeting",
+                    user.firstName + " " + user.lastName + getString(R.string.is_not_available_for_meeting),
                     Toast.LENGTH_LONG).show();
         }else {
           Intent intent = new Intent(getApplicationContext(),OutgoingInvitationActivity.class);
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements UserListeners {
     public void initiateAudioMeeting(User user) {
         if (user.token == null || user.token.trim().isEmpty()){
             Toast.makeText(this,
-                    user.firstName + " " + user.lastName + "is not available for meeting",
+                    user.firstName + " " + user.lastName + R.string.is_not_available_for_meeting,
                     Toast.LENGTH_LONG).show();
         }else {
             Intent intent = new Intent(getApplicationContext(),OutgoingInvitationActivity.class);

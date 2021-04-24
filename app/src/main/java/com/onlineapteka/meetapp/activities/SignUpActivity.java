@@ -52,19 +52,19 @@ public class SignUpActivity extends AppCompatActivity {
 
         buttonSignUp.setOnClickListener(v -> {
             if (editFirstName.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignUpActivity.this,"Enter first name",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this, R.string.enter_first_name,Toast.LENGTH_LONG).show();
             }else if (editLastName.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignUpActivity.this,"Enter last name",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this, R.string.enter_last_name,Toast.LENGTH_LONG).show();
             }else if (editEmail.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignUpActivity.this,"Enter email",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this, R.string.enter_email,Toast.LENGTH_LONG).show();
             }else if (!Patterns.EMAIL_ADDRESS.matcher(editEmail.getText().toString()).matches()){
-                Toast.makeText(SignUpActivity.this,"Enter valid email",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this,R.string.enter_valid_email,Toast.LENGTH_LONG).show();
             }else if (editPassword.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignUpActivity.this,"Enter password",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this,R.string.enter_password,Toast.LENGTH_LONG).show();
             }else if (editConfirmPassword.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignUpActivity.this,"Enter confirm password",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this, R.string.enter_confirm_password,Toast.LENGTH_LONG).show();
             }else if (!editPassword.getText().toString().equals(editConfirmPassword.getText().toString())){
-                Toast.makeText(SignUpActivity.this,"Password and confirm password must be same",
+                Toast.makeText(SignUpActivity.this, R.string.password_and_confirm_password_must_be_same,
                         Toast.LENGTH_LONG).show();
             }else {
                 signUp();
@@ -95,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }).addOnFailureListener(e -> {
                     progressBarSignUp.setVisibility(View.INVISIBLE);
                     buttonSignUp.setVisibility(View.VISIBLE);
-                    Toast.makeText(SignUpActivity.this,"Error " + e.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this,getString(R.string.error) + e.getMessage(),Toast.LENGTH_LONG).show();
                 });
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">MeetApp</string>
+    <string name="welcome_to">Добро пожаловать в</string>
+    <string name="video_meeting_conference_app">Видео встреча | Приложение для конференций</string>
+    <string name="sign_in_to_your_account">Войдите в свой аккаунт</string>
+    <string name="email">Email</string>
+    <string name="your_example_com">your@example.com</string>
+    <string name="password">Пароль</string>
+    <string name="u2022_u2022_u2022_u2022_u2022_u2022_u2022">• • • • • • •</string>
+    <string name="sign_in">Войти</string>
+    <string name="don_t_have_account">Нет учетной записи?</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="we_need_a_few_details_to_get_you_account_ready">Нам нужно несколько деталей, чтобы подготовить вашу учетную запись</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="confirm_password">Подтвердить Пароль</string>
+    <string name="already_have_an_account">Уже есть аккаунт?</string>
+    <string name="incoming_meeting_invitation">Входящее приглашение на встречу</string>
+    <string name="sending_meeting_invitation">Отправка приглашения на встречу</string>
+
+    <string name="invitation_canceled">"Приглашение отменено"</string>
+    <string name="invitation_rejected" >Приглашение отклонено</string>
+    <string name="unable_to_sign_in_out" >Невозможно войти</string>
+    <string name="is_not_available_for_meeting">Не доступен для встречи</string>
+    <string name="unable_to_send_token" tools:ignore="MissingTranslation">"Невозможно отправить токен"</string>
+    <string name="no_users_available" tools:ignore="MissingTranslation">Нет доступных пользователей</string>
+    <string name="sign_out">Выход</string>
+    <string name="invitation_sent_successfully" tools:ignore="MissingTranslation">Приглашение успешно отправлено</string>
+    <string name="enter_email" tools:ignore="MissingTranslation">Введите адрес электронной почты</string>
+    <string name="enter_valid_email" tools:ignore="MissingTranslation">Введите действующий адрес электронной почты</string>    <string name="enter_password" tools:ignore="MissingTranslation">Enter password</string>
+<!--    <string name="enter_password">Введите пароль</string>-->
+    <string name="unable_to_sign_in" tools:ignore="MissingTranslation">Невозможно войти</string>
+
+
+    <string name="error" tools:ignore="MissingTranslation">Ошибка"</string>
+    <string name="enter_first_name" tools:ignore="MissingTranslation">Введите имя</string>
+    <string name="enter_last_name">Введите фамилию</string>
+    <string name="enter_confirm_password">Введите пароль для подтверждения</string>
+    <string name="password_and_confirm_password_must_be_same">Пароль и пароль подтверждения должны совпадать</string>
+
+
+</resources>

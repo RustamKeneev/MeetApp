@@ -16,6 +16,9 @@ import com.onlineapteka.meetapp.R;
 import com.onlineapteka.meetapp.utilities.Constants;
 import com.onlineapteka.meetapp.utilities.PreferenceManager;
 
+import static com.onlineapteka.meetapp.R.string.enter_email;
+import static com.onlineapteka.meetapp.R.string.enter_valid_email;
+
 public class SignInActivity extends AppCompatActivity {
 
     private EditText editEmail;
@@ -48,11 +51,11 @@ public class SignInActivity extends AppCompatActivity {
 
         buttonSignIn.setOnClickListener(v -> {
             if (editEmail.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignInActivity.this,"Enter email",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignInActivity.this, R.string.enter_email,Toast.LENGTH_LONG).show();
             }else if (!Patterns.EMAIL_ADDRESS.matcher(editEmail.getText().toString()).matches()){
-                Toast.makeText(SignInActivity.this,"Enter valid email",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignInActivity.this, R.string.enter_valid_email,Toast.LENGTH_LONG).show();
             }else if (editPassword.getText().toString().trim().isEmpty()){
-                Toast.makeText(SignInActivity.this,"Enter password",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignInActivity.this, R.string.enter_password,Toast.LENGTH_LONG).show();
             }else {
                 signIn();
             }
@@ -85,7 +88,7 @@ public class SignInActivity extends AppCompatActivity {
                     }else {
                         progressBarSignIn.setVisibility(View.INVISIBLE);
                         buttonSignIn.setVisibility(View.VISIBLE);
-                        Toast.makeText(SignInActivity.this,"Unable to sign in",Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignInActivity.this, R.string.unable_to_sign_in,Toast.LENGTH_LONG).show();
                     }
                 });
     }

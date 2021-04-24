@@ -31,6 +31,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.onlineapteka.meetapp.R.string.invitation_rejected;
+import static com.onlineapteka.meetapp.R.string.invitation_sent_successfully;
+
 public class OutgoingInvitationActivity extends AppCompatActivity {
     private ImageView imageMeetingType;
     private TextView textFirstChar;
@@ -128,9 +131,9 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     if (type.equals(Constants.REMOTE_MSG_INVITATION)){
                         Toast.makeText(OutgoingInvitationActivity.this,
-                                "Invitation sent successfully", Toast.LENGTH_LONG).show();
+                                R.string.invitation_sent_successfully, Toast.LENGTH_LONG).show();
                     }else if (type.equals(Constants.REMOTE_MSG_INVITATION_RESPONSE)){
-                        Toast.makeText(OutgoingInvitationActivity.this,"Invitation canceled",
+                        Toast.makeText(OutgoingInvitationActivity.this,R.string.invitation_canceled,
                                 Toast.LENGTH_LONG).show();
                         finish();
                     }
@@ -187,7 +190,7 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                         finish();
                     }
                 }else if (type.equals(Constants.REMOTE_MSG_INVITATION_REJECTED)){
-                    Toast.makeText(context,"Invitation Rejected ",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.invitation_rejected,Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
